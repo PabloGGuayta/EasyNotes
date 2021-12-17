@@ -1,9 +1,6 @@
 package com.example.easynotes.controller;
 
-import com.example.easynotes.dto.NoteResponseWithCantLikesDTO;
-import com.example.easynotes.dto.ThankDTO;
-import com.example.easynotes.dto.NoteRequestDTO;
-import com.example.easynotes.dto.NoteResponseWithAuthorDTO;
+import com.example.easynotes.dto.*;
 import com.example.easynotes.model.Note;
 import com.example.easynotes.service.INoteService;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +38,12 @@ public class NoteController {
     @GetMapping("/{id}")
     public NoteResponseWithAuthorDTO getNoteById(@PathVariable(value = "id") Long noteId) {
         return noteService.getNoteById(noteId);
+    }
+
+    //Ejercicio 1
+    @GetMapping("/requestNoteType/{id}")
+    public NoteDTO requestNoteTypeById(@PathVariable(value = "id") Long noteId) {
+        return noteService.requestNoteType(noteId);
     }
 
     @PutMapping("/{id}")

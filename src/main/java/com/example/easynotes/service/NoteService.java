@@ -6,8 +6,10 @@ import com.example.easynotes.model.Note;
 import com.example.easynotes.model.Thank;
 import com.example.easynotes.model.User;
 import com.example.easynotes.repository.NoteRepository;
+import com.example.easynotes.repository.ThankRepository;
 import com.example.easynotes.repository.UserRepository;
 import com.example.easynotes.utils.ListMapper;
+import com.example.easynotes.utils.NoteTypes;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,16 +23,19 @@ public class NoteService implements INoteService {
 
     NoteRepository noteRepository;
     UserRepository userRepository;
+    ThankRepository thankRepository;
     ModelMapper modelMapper;
     ListMapper listMapper;
 
     @Autowired
     NoteService(NoteRepository noteRepository,
                 UserRepository userRepository,
+                ThankRepository thankRepository,
                 ModelMapper modelMapper,
                 ListMapper listMapper) {
         this.noteRepository = noteRepository;
         this.userRepository = userRepository;
+        this.thankRepository = thankRepository;
         this.listMapper = listMapper;
 
         //Converter used to retrieve cant of user's notes
@@ -100,6 +105,29 @@ public class NoteService implements INoteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
         return modelMapper.map(note, NoteResponseWithAuthorDTO.class);
     }
+
+    /* EJERCICIO 1 */
+
+    @Override
+    public NoteDTO requestNoteType(Long noteId) {
+
+        NoteDTO response = new NoteDTO ();
+        int postThanks = thankRepository.findThanksCountByNoteId(noteId);
+        response.setTypeNote(determinateNoteTypeByThanksCount(postThanks));
+
+        return response;
+    }
+
+    public NoteTypes determinateNoteTypeByThanksCount(int postThanks) {
+        if(postThanks>10)
+            return NoteTypes.Destacada;
+        else if(postThanks >= 5 && postThanks <=10)
+            return NoteTypes.DeInteres;
+        else
+            return NoteTypes.Normal;
+    }
+
+
 
     @Override
     public NoteResponseWithAuthorDTO updateNote(Long noteId,

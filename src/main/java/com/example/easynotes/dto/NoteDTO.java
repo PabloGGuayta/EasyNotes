@@ -1,5 +1,6 @@
 package com.example.easynotes.dto;
 
+import com.example.easynotes.utils.NoteTypes;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +26,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class NoteDTO {
 
+
     @NotEmpty
     private String title;
 
@@ -36,5 +38,7 @@ public class NoteDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date updatedAt;
+
+    private NoteTypes typeNote;
 
 }
