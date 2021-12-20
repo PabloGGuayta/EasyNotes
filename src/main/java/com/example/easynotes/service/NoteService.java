@@ -118,7 +118,7 @@ public class NoteService implements INoteService {
         return response;
     }
 
-    public NoteTypes determinateNoteTypeByThanksCount(int postThanks) {
+    private NoteTypes determinateNoteTypeByThanksCount(int postThanks) {
         if(postThanks>10)
             return NoteTypes.Destacada;
         else if(postThanks >= 5 && postThanks <=10)
