@@ -3,6 +3,7 @@ package com.example.easynotes.controller;
 import com.example.easynotes.dto.*;
 import com.example.easynotes.service.IUserService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,6 +89,14 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
+
+
+    //EJERCICIO 2
+    @GetMapping("/{id}/type")
+    public ResponseEntity<PublisherTypeDTO> getPublisherTypeByUserId(@PathVariable(value = "id") Long userId) {
+        return new ResponseEntity<>(userService.getPublisherTypeByUserId(userId), HttpStatus.OK);
+    }
+
 
 
     //Metodos de Jean para HQL

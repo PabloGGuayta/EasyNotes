@@ -24,6 +24,16 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
             "where YEAR(thank.createdAt) = :year " +
             "group by note.id order by cant_thanks desc")
     List<HashMap<String, Object>> findTopThreeNotesMostThankedByDate(int year);
+
+
+    @Query( "SELECT new map(note.id as id, note.createdAt as createdDate)" +
+            "from Note note inner join note.author as author " +
+            "where author.id =:userId "+
+            "order by note.createdAt desc")
+    List<HashMap<String, Object>> findNotesCreatedByUserIdNewerThanThreeWeeksAgo(Long userId);
+
+
+
 }
 /*
 note    thank
