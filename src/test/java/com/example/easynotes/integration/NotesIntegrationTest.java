@@ -70,7 +70,7 @@ public class NotesIntegrationTest {
     }
 
     @Test
-    public void testCorrectGetThanks() throws Exception {
+    public void testCorrectGetThanksDeInteres() throws Exception {
         // Arrange
         long noteId = 1L;
         NoteDTO expectedDTO = new NoteDTO();
@@ -87,5 +87,25 @@ public class NotesIntegrationTest {
                                         content().contentType(MediaType.APPLICATION_JSON)
 
                                 );
+    }
+
+    @Test
+    public void testCorrectGetThanksNormal() throws Exception {
+        // Arrange
+        long noteId = 30L;
+        NoteDTO expectedDTO = new NoteDTO();
+        expectedDTO.setTypeNote(NoteTypes.Normal);
+        String expectedJSON = writer.writeValueAsString(expectedDTO);
+
+
+        // Act & Assert
+        mockMvc.perform(get("/api/note/requestNoteType/" + noteId))
+                .andDo(print())
+                .andExpectAll(
+                        status().isOk(),
+                        content().json(expectedJSON),
+                        content().contentType(MediaType.APPLICATION_JSON)
+
+                );
     }
 }
