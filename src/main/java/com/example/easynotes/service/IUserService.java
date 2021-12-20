@@ -44,4 +44,7 @@ public interface IUserService {
 
     //  List<UserResponseDTO> getUsersLastNameLikeAndFirstNameLike(String lastName, String firstName);
 
+    //Ejercicio 2
+    PublisherTypeDTO getPublisherTypeByUserId (Long userId);
+
 }

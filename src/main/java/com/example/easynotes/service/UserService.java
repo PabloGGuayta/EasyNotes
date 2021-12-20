@@ -9,6 +9,7 @@ import com.example.easynotes.repository.NoteRepository;
 import com.example.easynotes.repository.ThankRepository;
 import com.example.easynotes.repository.UserRepository;
 import com.example.easynotes.utils.ListMapper;
+import com.example.easynotes.utils.PublisherTypes;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -195,4 +197,47 @@ public class UserService implements IUserService {
         User user = query.getResultList().get(1);
         return modelMapper.map(user, UserResponseDTO.class);
     }
+
+
+
+    //Ejercicio 2
+    @Override
+    public PublisherTypeDTO getPublisherTypeByUserId(Long userId) {
+
+        PublisherTypeDTO response;
+
+        //Traer notas creadas por el usuario
+        List<HashMap<String, Object>> userNotes = noteRepository.findNotesCreatedByUserIdNewerThanThreeWeeksAgo(userId);
+
+        if(checkIfIsADiaryPublisher(userNotes))
+            return response = new PublisherTypeDTO(PublisherTypes.PublicadorDiario);
+        else if(checkIfIsAWeeklyPublisher(userNotes))
+            return response = new PublisherTypeDTO(PublisherTypes.PublicadorSemanal);
+        else
+            return response = new PublisherTypeDTO(PublisherTypes.Publicador);
+
+    }
+
+    public boolean checkIfIsADiaryPublisher( List<HashMap<String, Object>> userNotes){
+
+        int cantDays = 3;
+
+        for(int i = 1; i<=cantDays; i++){
+
+            LocalDate requestDate = LocalDate.now().minusDays(i);
+
+
+        }
+
+        LocalDate.now().minusDays(1);
+        return false;
+
+    }
+
+    public boolean checkIfIsAWeeklyPublisher( List<HashMap<String, Object>> userNotes){
+
+        return false;
+    }
+
+
 }
