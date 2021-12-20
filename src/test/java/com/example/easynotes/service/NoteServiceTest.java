@@ -1,5 +1,6 @@
 package com.example.easynotes.service;
 
+import com.example.easynotes.dto.NoteDTO;
 import com.example.easynotes.dto.NoteRequestDTO;
 import com.example.easynotes.exception.ResourceNotFoundException;
 import com.example.easynotes.model.Note;
@@ -9,6 +10,7 @@ import com.example.easynotes.repository.NoteRepository;
 import com.example.easynotes.repository.ThankRepository;
 import com.example.easynotes.repository.UserRepository;
 import com.example.easynotes.utils.ListMapper;
+import com.example.easynotes.utils.NoteTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -110,5 +112,44 @@ class NoteServiceTest {
     @Test
     void getThreeMoreThankedNotes() {
         noteService.getThreeMoreThankedNotes(2020);
+    }
+
+    @Test
+    void getNoteTypeofNotExistingNote()
+    {
+        // Arrange
+        NoteTypes expected = NoteTypes.Normal;
+        NoteDTO resultDTO;
+        // Act
+        Mockito.when(thankRepository.findThanksCountByNoteId(Mockito.anyLong())).thenReturn(0);
+        resultDTO = noteService.requestNoteType(0L);
+        // Assert
+        Assertions.assertEquals(expected, resultDTO.getTypeNote());
+    }
+
+    @Test
+    void getNoteTypeofNoteWith10Likes()
+    {
+        // Arrange
+        NoteTypes expected = NoteTypes.DeInteres;
+        NoteDTO resultDTO;
+        // Act
+        Mockito.when(thankRepository.findThanksCountByNoteId(Mockito.anyLong())).thenReturn(10);
+        resultDTO = noteService.requestNoteType(0L);
+        // Assert
+        Assertions.assertEquals(expected, resultDTO.getTypeNote());
+    }
+
+    @Test
+    void getNoteTypeofNoteWith11Likes()
+    {
+        // Arrange
+        NoteTypes expected = NoteTypes.Destacada;
+        NoteDTO resultDTO;
+        // Act
+        Mockito.when(thankRepository.findThanksCountByNoteId(Mockito.anyLong())).thenReturn(11);
+        resultDTO = noteService.requestNoteType(0L);
+        // Assert
+        Assertions.assertEquals(expected, resultDTO.getTypeNote());
     }
 }
